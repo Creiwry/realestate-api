@@ -1,3 +1,6 @@
+
+require_dependency 'validators/password_regex_validator'
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -7,4 +10,9 @@ class User < ApplicationRecord
 
   has_many :user_properties
   has_many :properties, through: :user_properties
+
+  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates_with Validators::PasswordRegexValidator
+
+  validates :first_name, presence: true
 end
