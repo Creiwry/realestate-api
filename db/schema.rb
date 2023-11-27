@@ -45,6 +45,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_141540) do
   create_table "properties", force: :cascade do |t|
     t.string "name"
     t.string "location"
+    t.string "city"
     t.text "description"
     t.integer "area"
     t.integer "number_of_rooms"

@@ -39,13 +39,14 @@ class UserPropertiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user_property
-      @user_property = UserProperty.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def user_property_params
-      params.require(:user_property).permit(:user_id, :property_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user_property
+    @user_property = UserProperty.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def user_property_params
+    params.require(:user_property).permit(:user_id, :property_id)
+  end
 end
