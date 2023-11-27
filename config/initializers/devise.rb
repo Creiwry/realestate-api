@@ -269,7 +269,7 @@ Devise.setup do |config|
   config.sign_out_via = :delete
 
   config.jwt do |jwt|
-    jwt.secret = ENV.fetch['SECRET_KEY_BASE']
+    jwt.secret = ENV['SECRET_KEY_BASE']
     jwt.dispatch_requests = [
       ['POST', %r{^/login$}]
     ]
