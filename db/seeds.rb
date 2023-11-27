@@ -10,7 +10,12 @@ Property.destroy_all
 User.destroy_all
 
 10.times do
-  User.create(email: Faker::Internet.email, password: 'password')
+  User.create(
+    email: Faker::Internet.email,
+    password: 'password',
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name
+  )
 end
 
 users = User.all
@@ -26,6 +31,7 @@ booleans = [true, false]
     furnished: booleans.sample,
     terrace: booleans.sample,
     basement: booleans.sample,
+    renting: booleans.sample,
     user: users.sample
   )
 end

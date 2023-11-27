@@ -9,6 +9,7 @@ class CreateProperties < ActiveRecord::Migration[7.1]
       t.boolean :furnished
       t.boolean :terrace
       t.boolean :basement
+      t.boolean :renting
 
       t.timestamps
     end
