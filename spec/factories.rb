@@ -3,7 +3,7 @@ FactoryBot.define do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
     email { Faker::Internet.email }
-    password { 'password' }
+    password { 'Password!23' }
   end
 end
 
@@ -19,7 +19,7 @@ cities = [
 
 FactoryBot.define do
   factory(:property) do
-    name { Faker::Lorem.words(number: 5).join(' ') }
+    name { Faker::Lorem.words(number: 5).join(' ').slice(0, 15) }
     location { Faker::Address.street_address }
     city { cities.sample }
     description { Faker::Lorem.paragraphs.join(' ') }

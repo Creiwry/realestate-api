@@ -8,11 +8,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :validatable, :jwt_authenticatable, jwt_revocation_strategy: self
 
-  has_many :user_properties
+  has_many :user_properties, dependent: :destroy
   has_many :properties, through: :user_properties
 
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates_with Validators::PasswordRegexValidator
 
   validates :first_name, presence: true
+  validates :last_name, presence: true
 end
