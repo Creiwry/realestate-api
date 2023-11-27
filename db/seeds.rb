@@ -20,14 +20,23 @@ end
 
 users = User.all
 booleans = [true, false]
+cities = [
+  "Paris",
+  "Nice",
+  "Toulouse",
+  "Bordeaux",
+  "Marseille",
+  "Nantes",
+  "Lyon",
+]
 
 20.times do
   number_of_rooms = Faker::Number.between(from: 1, to: 10)
   number_of_bedrooms = number_of_rooms > 3 ? number_of_rooms - 2 : 0
   Property.create(
     name: Faker::Lorem.words(number: 5).join(' '),
-    location: Faker::Address.full_address,
-    city: Faker::Address.city,
+    location: Faker::Address.street_address,
+    city: cities.sample,
     description: Faker::Lorem.paragraphs.join(' '),
     area: Faker::Number.between(from: 20, to: 200),
     number_of_rooms:,
