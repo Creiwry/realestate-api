@@ -50,10 +50,10 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_141540) do
     t.integer "area"
     t.integer "number_of_rooms"
     t.integer "number_of_bedrooms"
-    t.boolean "furnished", default: true
-    t.boolean "terrace", default: true
-    t.boolean "basement", default: true
-    t.boolean "renting", default: true
+    t.boolean "furnished", default: false
+    t.boolean "terrace", default: false
+    t.boolean "basement", default: false
+    t.boolean "renting", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
