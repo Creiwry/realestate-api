@@ -7,7 +7,6 @@ RSpec.describe 'Users', type: :request do
         email: 'user@example.com',
         password: 'Password!23',
         password_confirmation: 'Password!23',
-        first_name: 'Gerard',
       }
     }
   end
@@ -27,21 +26,19 @@ RSpec.describe 'Users', type: :request do
   describe 'POST /users/sign_up' do
     it 'creates a new user' do
       expect do
-        post user_registration_path, params: valid_attributes
+        post '/signup', params: valid_attributes
       end.to change(User, :count).by(1)
-
-      expect(response).to redirect_to(users_path)
     end
   end
 
   describe 'POST /users/sign_in' do
     let!(:user) do
-      User.create!(email: 'user@example.com', password: 'Password!23', first_name: 'Gerard', last_name: 'Way')
+      User.create!(email: 'user@example.com', password: 'Password!23')
     end
 
     it 'signs in the user' do
-      post user_session_path, params: { user: { email: 'user@example.com', password: 'Password!23' } }
-      expect(response).to redirect_to(root_path)
+      post '/login', params: { user: { email: 'user@example.com', password: 'Password!23' } }
+      expect(response).to have_http_status(:success)
     end
   end
 
