@@ -11,22 +11,10 @@ RSpec.describe 'Users', type: :request do
     }
   end
 
-  describe 'DELETE #destroy session' do
-    let(:user) { create(:user) }
-    before do
-      sign_in user
-    end
-
-    it 'logs the user out' do
-      delete destroy_user_session_path
-      expect(controller.current_user).to be_nil
-    end
-  end
-
-  describe 'POST /users/sign_up' do
+  describe 'POST /users' do
     it 'creates a new user' do
       expect do
-        post '/signup', params: valid_attributes
+        post '/users', params: valid_attributes
       end.to change(User, :count).by(1)
     end
   end
@@ -37,21 +25,7 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'signs in the user' do
-      post '/login', params: { user: { email: 'user@example.com', password: 'Password!23' } }
-      expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe 'GET /users/sign_in' do
-    it 'returns http success' do
-      get new_user_registration_path
-      expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe 'GET /users/sign_up' do
-    it 'returns http success' do
-      get new_user_session_path
+      post '/users/sign_in', params: { user: { email: 'user@example.com', password: 'Password!23' } }
       expect(response).to have_http_status(:success)
     end
   end
@@ -96,16 +70,19 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'DELETE /users' do
-    let(:user) { create(:user) }
+    let!(:user) do
+      User.create!(email: 'user@example.com', password: 'Password!23')
+    end
 
     before do
-      sign_in user
+      post '/users/sign_in', params: { user: { email: 'user@example.com', password: 'Password!23' } }
+      @token = response.headers["authorization"]
     end
 
     it 'destroys the user' do
-      expect do
-        delete user_registration_path
-      end.to change(User, :count).by(-1)
+      initial_count = User.count
+      delete '/users', headers: { Authorization: @token }
+      expect(User.count).to eq(initial_count -1)
     end
   end
 end
