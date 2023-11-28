@@ -18,6 +18,6 @@ class Property < ApplicationRecord
             numericality:
             { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 90 }
 
-  has_one :user_property
+  has_one :user_property, dependent: :destroy
   has_one :user, through: :user_property
 end

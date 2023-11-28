@@ -9,7 +9,7 @@ class User < ApplicationRecord
          :validatable, :jwt_authenticatable, jwt_revocation_strategy: self
 
   has_many :user_properties, dependent: :destroy
-  has_many :properties, through: :user_properties
+  has_many :properties, through: :user_properties, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates_with Validators::PasswordRegexValidator
