@@ -82,9 +82,8 @@ RSpec.describe 'Users', type: :request do
     end
 
     it 'returns http code success' do
-      initial_count = User.count
       delete '/users', headers: { Authorization: @token }
-    expect(response.status).to eq(200) 
+      expect(response.status).to eq(200) 
     end
   end
 end
