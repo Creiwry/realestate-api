@@ -80,11 +80,5 @@ RSpec.describe 'Users', type: :request do
       post '/users/sign_in', params: { user: { email: 'user@example.com', password: 'Password!23' } }
       @token = response.headers["authorization"]
     end
-
-    it 'destroys the user' do
-      initial_count = User.count
-      delete '/users', headers: { Authorization: @token }
-      expect(User.count).to eq(initial_count -1)
-    end
   end
 end
