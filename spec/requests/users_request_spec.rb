@@ -80,5 +80,11 @@ RSpec.describe 'Users', type: :request do
       post '/users/sign_in', params: { user: { email: 'user@example.com', password: 'Password!23' } }
       @token = response.headers["authorization"]
     end
+
+    it 'returns http code success' do
+      initial_count = User.count
+      delete '/users', headers: { Authorization: @token }
+    expect(response.status).to eq(200) 
+    end
   end
 end
