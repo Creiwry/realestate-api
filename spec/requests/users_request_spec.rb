@@ -7,6 +7,8 @@ RSpec.describe 'Users', type: :request do
         email: 'user@example.com',
         password: 'Password!23',
         password_confirmation: 'Password!23',
+        first_name: 'Billie Joe',
+        last_name: 'Armstrong'
       }
     }
   end
@@ -21,7 +23,7 @@ RSpec.describe 'Users', type: :request do
 
   describe 'POST /users/sign_in' do
     let!(:user) do
-      User.create!(email: 'user@example.com', password: 'Password!23')
+      User.create!(email: 'user@example.com', password: 'Password!23', first_name: 'Billie Joe', last_name: 'Armstrong')
     end
 
     it 'signs in the user' do
@@ -71,7 +73,7 @@ RSpec.describe 'Users', type: :request do
 
   describe 'DELETE /users' do
     let!(:user) do
-      User.create!(email: 'user@example.com', password: 'Password!23')
+      User.create!(email: 'user@example.com', password: 'Password!23', first_name: 'Billie Joe', last_name: 'Armstrong')
     end
 
     before do
