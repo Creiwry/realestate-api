@@ -59,3 +59,5 @@ end
 
 
 gem "minitest", "~> 5.20"
+
+gem "pry", "~> 0.14.2"
