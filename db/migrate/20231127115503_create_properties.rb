@@ -8,10 +8,10 @@ class CreateProperties < ActiveRecord::Migration[7.1]
       t.integer :area
       t.integer :number_of_rooms
       t.integer :number_of_bedrooms
-      t.boolean :furnished
-      t.boolean :terrace
-      t.boolean :basement
-      t.boolean :renting
+      t.boolean :furnished, default: false
+      t.boolean :terrace, default: false
+      t.boolean :basement, default: false
+      t.boolean :renting, default: false
 
       t.timestamps
     end
