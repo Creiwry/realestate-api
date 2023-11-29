@@ -9,6 +9,7 @@ RSpec.describe 'Properties', type: :request do
         name: Faker::Lorem.words(number: 5).join(' ').slice(0, 15),
         location: Faker::Address.street_address,
         city: 'Paris',
+        price: 50_000,
         description: Faker::Lorem.paragraphs.join(' '),
         area: 100,
         number_of_rooms: 6,

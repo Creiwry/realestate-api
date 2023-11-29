@@ -37,6 +37,7 @@ cities = [
     name: Faker::Lorem.words(number: 5).join(' '),
     location: Faker::Address.street_address,
     city: cities.sample,
+    price: 50000,
     description: Faker::Lorem.paragraphs.join(' '),
     area: Faker::Number.between(from: 20, to: 200),
     number_of_rooms:,

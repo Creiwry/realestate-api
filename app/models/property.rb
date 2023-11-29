@@ -3,6 +3,9 @@ class Property < ApplicationRecord
 
   validates :name, presence: true, length: { maximum: 20 }
   validates :city, presence: true
+  validates :price, presence: true,
+            numericality:
+            { only_integer: true, greater_than_or_equal_to: 1 }
   validates :location, presence: true
   validates :description, presence: true, length: { maximum: 500 }
   validates :area,
