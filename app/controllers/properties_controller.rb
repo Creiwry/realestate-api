@@ -12,7 +12,7 @@ class PropertiesController < ApplicationController
       properties_array << property.as_json.merge(image: url_for(property.images[0]))
     end
 
-    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :created, location: @property
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :ok
   end
 
   # GET /properties/search/:city
@@ -26,7 +26,7 @@ class PropertiesController < ApplicationController
       properties_array << property.as_json.merge(image: url_for(property.images[0]))
     end
 
-    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :created, location: @property
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :ok
   end
 
   # GET /properties/1
