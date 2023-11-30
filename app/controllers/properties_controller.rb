@@ -6,8 +6,13 @@ class PropertiesController < ApplicationController
   # GET /properties
   def index
     @properties = Property.all
+    properties_array = []
 
-    render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :created, location: @property
+    @properties.each do |property|
+      properties_array << property.as_json.merge(image: url_for(property.images[0]))
+    end
+
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :created, location: @property
   end
 
   # GET /properties/search/:city
@@ -15,7 +20,13 @@ class PropertiesController < ApplicationController
     city_string = params[:city].split('_').length > 1 ? params[:city].split('_').join(' ') : params[:city]
     @properties = Property.where(city: city_string)
 
-    render json: @properties
+    properties_array = []
+
+    @properties.each do |property|
+      properties_array << property.as_json.merge(image: url_for(property.images[0]))
+    end
+
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :created, location: @property
   end
 
   # GET /properties/1
