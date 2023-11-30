@@ -7,7 +7,7 @@ class PropertiesController < ApplicationController
   def index
     @properties = Property.all
 
-    render json: @properties
+    render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :created, location: @property
   end
 
   # GET /properties/search/:city
@@ -20,17 +20,36 @@ class PropertiesController < ApplicationController
 
   # GET /properties/1
   def show
-    render json: @property
+    images_array = []
+    @property.images.each do |image|
+      images_array << url_for(image)
+    end
+
+    render json: @property.as_json.merge(images: images_array)
   end
 
   # POST /properties
   def create
     @property = Property.new(property_params)
-    puts current_user.email
+    puts params[:images]
     @property.user = current_user
 
+    @property.images.attach(params[:image])
+
     if @property.save
-      render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :created, location: @property
+      render json:
+        {
+          status:
+          {
+            code: 201,
+            message: 'created successfully'
+          },
+          data:
+          {
+            property: @property,
+            user_email: @property.user.email
+          }
+        }, status: :created, location: @property
     else
       render json: {status: {code: 422, errors: @property.errors}}, status: :unprocessable_entity
     end
@@ -39,7 +58,7 @@ class PropertiesController < ApplicationController
   # PATCH/PUT /properties/1
   def update
     if @property.update(property_params)
-      render json: {status: {code: 200, message: 'created successfully'}, data: @property}
+      render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :ok
     else
       render json: {status: {code: 422, errors: @property.errors}}, status: :unprocessable_entity
     end
@@ -67,6 +86,6 @@ class PropertiesController < ApplicationController
   def property_params
     params
       .require(:property)
-      .permit(:name, :price, :location, :city, :description, :area, :number_of_rooms, :number_of_bedrooms, :furnished, :terrace, :basement, :renting)
+      .permit(:name, :price, :location, :city, :description, :area, :number_of_rooms, :number_of_bedrooms, :furnished, :terrace, :basement, :renting, :images)
   end
 end
