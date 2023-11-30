@@ -67,6 +67,8 @@ class PropertiesController < ApplicationController
 
   # PATCH/PUT /properties/1
   def update
+
+    @property.images.attach(params[:property][:images])
     if @property.update(property_params)
       render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :ok
     else
