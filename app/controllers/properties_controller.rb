@@ -67,8 +67,6 @@ class PropertiesController < ApplicationController
     @property = Property.new(property_params)
     @property.user = current_user
 
-    @property.images.attach(params[:property][:images])
-
     if @property.save
       render json:
         {
@@ -90,8 +88,6 @@ class PropertiesController < ApplicationController
 
   # PATCH/PUT /properties/1
   def update
-
-    @property.images.attach(params[:property][:images])
     if @property.update(property_params)
       render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :ok
     else
