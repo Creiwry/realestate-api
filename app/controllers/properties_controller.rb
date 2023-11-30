@@ -1,5 +1,6 @@
 class PropertiesController < ApplicationController
   before_action :authenticate_user!, only: %i[ create update destroy ]
+  before_action :check_current_user, only: %i[update destroy]
   before_action :set_property, only: %i[ show update destroy ]
 
   # GET /properties
@@ -17,6 +18,8 @@ class PropertiesController < ApplicationController
   # POST /properties
   def create
     @property = Property.new(property_params)
+    puts current_user.email
+    @property.user = current_user
 
     if @property.save
       render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :created, location: @property
@@ -41,6 +44,12 @@ class PropertiesController < ApplicationController
 
   private
 
+  def check_current_user
+    property = Property.find(params[:id])
+    return if current_user == property.user
+
+    render json: {status: {code: 401, errors: "You are not authorized to change this property"}}, status: :unauthorized
+  end
   # Use callbacks to share common setup or constraints between actions.
   def set_property
     @property = Property.find(params[:id])
