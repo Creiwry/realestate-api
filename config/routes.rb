@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :user_properties
   resources :properties
+  get '/properties/search/:city', to: 'properties#index_by_city'
   get '/current_user', to: 'current_user#index'
   devise_for :users, path: '/users', path_names: {
       sign_in: '/sign_in',

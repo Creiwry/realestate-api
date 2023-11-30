@@ -10,6 +10,14 @@ class PropertiesController < ApplicationController
     render json: @properties
   end
 
+  # GET /properties/search/:city
+  def index_by_city
+    city_string = params[:city].split('_').length > 1 ? params[:city].split('_').join(' ') : params[:city]
+    @properties = Property.where(city: city_string)
+
+    render json: @properties
+  end
+
   # GET /properties/1
   def show
     render json: @property
@@ -48,7 +56,7 @@ class PropertiesController < ApplicationController
     property = Property.find(params[:id])
     return if current_user == property.user
 
-    render json: {status: {code: 401, errors: "You are not authorized to change this property"}}, status: :unauthorized
+    render json: {status: {code: 401, errors: 'You are not authorized to change this property'}}, status: :unauthorized
   end
   # Use callbacks to share common setup or constraints between actions.
   def set_property
