@@ -34,7 +34,7 @@ cities = [
   number_of_rooms = Faker::Number.between(from: 1, to: 10)
   number_of_bedrooms = number_of_rooms > 3 ? number_of_rooms - 2 : 0
   Property.create(
-    name: Faker::Lorem.words(number: 5).join(' '),
+    name: Faker::Lorem.words(number: 1).join(''),
     location: Faker::Address.street_address,
     city: cities.sample,
     price: 50000,

@@ -1,25 +1,88 @@
 class PropertiesController < ApplicationController
   before_action :authenticate_user!, only: %i[ create update destroy ]
+  before_action :check_current_user, only: %i[update destroy]
   before_action :set_property, only: %i[ show update destroy ]
 
   # GET /properties
   def index
-    @properties = Property.all
+    @properties = Property.last(6).reverse
+    properties_array = []
 
-    render json: @properties
+    @properties.each do |property|
+      properties_array << property.as_json.merge(image: url_for(property.images[0]))
+    end
+
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :ok
+  end
+
+  # GET /properties/search/:city
+  def index_by_city
+    city_string = params[:city].split('_').length > 1 ? params[:city].split('_').join(' ') : params[:city]
+    @properties = Property.where(city: city_string)
+
+    properties_array = []
+
+    @properties.each do |property|
+      properties_array << property.as_json.merge(image: url_for(property.images[0]))
+    end
+
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :ok
+  end
+
+  def index_renting
+    @properties = Property.where(renting: true).last(6).reverse
+    properties_array = []
+
+    @properties.each do |property|
+      properties_array << property.as_json.merge(image: url_for(property.images[0]))
+    end
+
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :ok
+  end
+
+
+  def index_selling
+    @properties = Property.where(renting: false).last(6).reverse
+    properties_array = []
+
+    @properties.each do |property|
+      properties_array << property.as_json.merge(image: url_for(property.images[0]))
+    end
+
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :ok
   end
 
   # GET /properties/1
   def show
-    render json: @property
+    images_array = []
+    @property.images.each do |image|
+      images_array << url_for(image)
+    end
+
+    render json: @property.as_json.merge(images: images_array)
   end
 
   # POST /properties
   def create
     @property = Property.new(property_params)
+    @property.user = current_user
+
+    @property.images.attach(params[:property][:images])
 
     if @property.save
-      render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :created, location: @property
+      render json:
+        {
+          status:
+          {
+            code: 201,
+            message: 'created successfully'
+          },
+          data:
+          {
+            property: @property,
+            user_email: @property.user.email
+          }
+        }, status: :created, location: @property
     else
       render json: {status: {code: 422, errors: @property.errors}}, status: :unprocessable_entity
     end
@@ -27,8 +90,10 @@ class PropertiesController < ApplicationController
 
   # PATCH/PUT /properties/1
   def update
+
+    @property.images.attach(params[:property][:images])
     if @property.update(property_params)
-      render json: {status: {code: 200, message: 'created successfully'}, data: @property}
+      render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :ok
     else
       render json: {status: {code: 422, errors: @property.errors}}, status: :unprocessable_entity
     end
@@ -41,6 +106,12 @@ class PropertiesController < ApplicationController
 
   private
 
+  def check_current_user
+    property = Property.find(params[:id])
+    return if current_user == property.user
+
+    render json: {status: {code: 401, errors: 'You are not authorized to change this property'}}, status: :unauthorized
+  end
   # Use callbacks to share common setup or constraints between actions.
   def set_property
     @property = Property.find(params[:id])
@@ -50,6 +121,6 @@ class PropertiesController < ApplicationController
   def property_params
     params
       .require(:property)
-      .permit(:name, :price, :location, :city, :description, :area, :number_of_rooms, :number_of_bedrooms, :furnished, :terrace, :basement, :renting)
+      .permit(:name, :price, :location, :city, :description, :area, :number_of_rooms, :number_of_bedrooms, :furnished, :terrace, :basement, :renting, images:[])
   end
 end
