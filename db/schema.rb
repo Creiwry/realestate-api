@@ -43,13 +43,14 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_27_141540) do
   end
 
   create_table "properties", force: :cascade do |t|
-    t.string "name"
-    t.string "location"
-    t.string "city"
-    t.text "description"
-    t.integer "area"
-    t.integer "number_of_rooms"
-    t.integer "number_of_bedrooms"
+    t.string "name", null: false
+    t.string "location", null: false
+    t.integer "price", null: false
+    t.string "city", null: false
+    t.text "description", null: false
+    t.integer "area", null: false
+    t.integer "number_of_rooms", null: false
+    t.integer "number_of_bedrooms", null: false
     t.boolean "furnished", default: false
     t.boolean "terrace", default: false
     t.boolean "basement", default: false

@@ -22,6 +22,7 @@ FactoryBot.define do
     name { Faker::Lorem.words(number: 5).join(' ').slice(0, 15) }
     location { Faker::Address.street_address }
     city { cities.sample }
+    price { Faker::Number.between(from: 1000, to: 100000) }
     description { Faker::Lorem.paragraphs.join(' ') }
     area { Faker::Number.between(from: 20, to: 200) }
     number_of_rooms { Faker::Number.between(from: 4, to: 10) }
