@@ -5,7 +5,7 @@ class PropertiesController < ApplicationController
 
   # GET /properties
   def index
-    @properties = Property.all
+    @properties = Property.last(6).reverse
     properties_array = []
 
     @properties.each do |property|
@@ -20,6 +20,29 @@ class PropertiesController < ApplicationController
     city_string = params[:city].split('_').length > 1 ? params[:city].split('_').join(' ') : params[:city]
     @properties = Property.where(city: city_string)
 
+    properties_array = []
+
+    @properties.each do |property|
+      properties_array << property.as_json.merge(image: url_for(property.images[0]))
+    end
+
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :ok
+  end
+
+  def index_renting
+    @properties = Property.where(renting: true).last(6).reverse
+    properties_array = []
+
+    @properties.each do |property|
+      properties_array << property.as_json.merge(image: url_for(property.images[0]))
+    end
+
+    render json: {status: {code: 200, message: 'index rendered'}, data: properties_array}, status: :ok
+  end
+
+
+  def index_selling
+    @properties = Property.where(renting: false).last(6).reverse
     properties_array = []
 
     @properties.each do |property|
