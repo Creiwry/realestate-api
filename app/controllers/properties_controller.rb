@@ -59,7 +59,7 @@ class PropertiesController < ApplicationController
       images_array << url_for(image)
     end
 
-    render json: @property.as_json.merge(images: images_array)
+    render json: @property.as_json.merge(images: images_array).merge(user_email: @property.user.email)
   end
 
   # POST /properties
