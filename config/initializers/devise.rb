@@ -226,6 +226,9 @@ Devise.setup do |config|
   # change their passwords.
   config.reset_password_within = 6.hours
 
+  config.warden do |manager|
+    manager.failure_app = CustomFailureApp::FailureApp
+  end
   # When set to false, does not sign a user in automatically after their password is
   # reset. Defaults to true, so a user is signed in automatically after a reset.
   # config.sign_in_after_reset_password = true
@@ -269,12 +272,12 @@ Devise.setup do |config|
   config.sign_out_via = :delete
 
   config.jwt do |jwt|
-    jwt.secret = Rails.application.credentials.fetch(:secret_key_base)
+    jwt.secret = ENV['SECRET_KEY_BASE']
     jwt.dispatch_requests = [
-      ['POST', %r{^/login$}]
+      ['POST', %r{^/users/sign_in$}]
     ]
     jwt.revocation_requests = [
-      ['DELETE', %r{^/logout$}]
+      ['DELETE', %r{^/users/log_out$}]
     ]
     jwt.expiration_time = 30.minutes.to_i
   end
