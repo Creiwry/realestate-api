@@ -62,6 +62,8 @@ gem "minitest", "~> 5.20"
 
 gem "pry", "~> 0.14.2"
 
+gem "aws-sdk-s3", "~> 1.141"
+
 gem "dockerfile-rails", ">= 1.5", :group => :development
 
 gem "sentry-ruby", "~> 5.14"
