@@ -5,7 +5,7 @@ class PropertiesController < ApplicationController
 
   # GET /properties
   def index
-    @properties = Property.all
+    @properties = Property.last(6).reverse
     properties_array = []
 
     @properties.each do |property|
