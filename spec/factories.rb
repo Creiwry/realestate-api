@@ -19,7 +19,7 @@ cities = [
 
 FactoryBot.define do
   factory(:property) do
-    name { Faker::Lorem.words(number: 5).join(' ').slice(0, 15) }
+    name { Faker::Lorem.words(number: 1) }
     location { Faker::Address.street_address }
     city { cities.sample }
     price { Faker::Number.between(from: 1000, to: 100000) }
