@@ -42,10 +42,9 @@ class PropertiesController < ApplicationController
   # POST /properties
   def create
     @property = Property.new(property_params)
-    puts params[:images]
     @property.user = current_user
 
-    @property.images.attach(params[:image])
+    @property.images.attach(params[:property][:images])
 
     if @property.save
       render json:
@@ -68,6 +67,8 @@ class PropertiesController < ApplicationController
 
   # PATCH/PUT /properties/1
   def update
+
+    @property.images.attach(params[:property][:images])
     if @property.update(property_params)
       render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :ok
     else
@@ -97,6 +98,6 @@ class PropertiesController < ApplicationController
   def property_params
     params
       .require(:property)
-      .permit(:name, :price, :location, :city, :description, :area, :number_of_rooms, :number_of_bedrooms, :furnished, :terrace, :basement, :renting, :images)
+      .permit(:name, :price, :location, :city, :description, :area, :number_of_rooms, :number_of_bedrooms, :furnished, :terrace, :basement, :renting, images:[])
   end
 end
