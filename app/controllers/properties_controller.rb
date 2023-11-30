@@ -39,6 +39,11 @@ class PropertiesController < ApplicationController
     @property.destroy!
   end
 
+  def searchByCity
+    @properties = Property.where(city: params[:city])
+    render json: @properties
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
