@@ -19,18 +19,18 @@ class PropertiesController < ApplicationController
     @property = Property.new(property_params)
 
     if @property.save
-      render json: @property, status: :created, location: @property
+      render json: {status: {code: 200, message: 'created successfully'}, data: @property}, status: :created, location: @property
     else
-      render json: @property.errors, status: :unprocessable_entity
+      render json: {status: {code: 422, errors: @property.errors}}, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /properties/1
   def update
     if @property.update(property_params)
-      render json: @property
+      render json: {status: {code: 200, message: 'created successfully'}, data: @property}
     else
-      render json: @property.errors, status: :unprocessable_entity
+      render json: {status: {code: 422, errors: @property.errors}}, status: :unprocessable_entity
     end
   end
 
